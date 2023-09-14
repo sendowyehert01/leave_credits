@@ -18,6 +18,8 @@ db.once('open', () => {
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.send('Leave Credits');
@@ -28,13 +30,18 @@ app.get('/nonteaching', async (req, res) => {
     res.render('nonteaching', { ntnames });
 })
 
-// app.get('/addnonteaching', async (req, res) => {
-//     const ntnames = new NonTeaching({ 
-//         name: "Jeffel"
-//     });
-//     await ntnames.save();
-//     res.send('Added!');
-// })
+app.get('/addnonteaching', (req, res) => {
+    res.render('Add Name');
+})
+
+app.post('/nonteaching', async (req, res) => {
+    res.send(req.body);
+})
+
+app.get('/nonteaching/:id', async (req, res) => {
+    const ntnames = await NonTeaching.findById(req.params.id);
+    res.render('vl_data', { ntnames });
+})
 
 app.listen(3000, () => {
     console.log('You are listening to PORT 3000');
