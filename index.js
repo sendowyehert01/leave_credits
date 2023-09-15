@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const NonTeaching = require('./models/nonteaching');
 const methodOverride = require('method-override');
+const NonTeachingData = require('./models/data');
 
 mongoose.connect('mongodb://127.0.0.1:27017/NonTeachingDBTest', {
     useNewUrlParser: true,
@@ -37,13 +38,14 @@ app.get('/addnonteaching', (req, res) => {
 })
 
 app.post('/nonteaching', async (req, res) => {
-    const ntnames = new NonTeaching(req.body);
+    const ntnames = new NonTeaching(req.body.ntname);
     await ntnames.save();
     res.redirect('/nonteaching');
 })
 
 app.get('/nonteaching/:id', async (req, res) => {
-    const ntnames = await NonTeaching.findById(req.params.id);
+    const ntnames = await NonTeaching.findById(req.params.id).populate('data');
+    console.log(ntnames)
     res.render('vl_data', { ntnames });
 })
 
@@ -61,6 +63,15 @@ app.put('/nonteaching/:id', async (req, res) => {
 app.delete('/nonteaching/:id', async (req, res) => {
     const { id } = req.params;
     await NonTeaching.findByIdAndDelete(id);
+    res.redirect('/nonteaching');
+})
+
+app.post('/nonteaching/:id/data', async (req, res) => {
+    const ntnamesId = await NonTeaching.findById(req.params.id);
+    const ntnames = new NonTeachingData(req.body.data);
+    ntnamesId.data.push(ntnames);
+    await ntnames.save();
+    await ntnamesId.save();
     res.redirect('/nonteaching');
 })
 

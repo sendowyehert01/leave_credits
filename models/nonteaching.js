@@ -8,7 +8,11 @@ const NonTeachingSchema = new Schema({
     // suffix: String
     name: {
         type: String
-    }
+    },
+    data: [{
+        type: Schema.Types.ObjectId,
+        ref:  'NonTeachingData'
+    }]
 });
 
 module.exports = mongoose.model('NonTeaching', NonTeachingSchema);
