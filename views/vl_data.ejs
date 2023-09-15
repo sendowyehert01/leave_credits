@@ -13,11 +13,15 @@
   <div class="container-fluid">
     <a class="navbar-brand nt">VACATION LEAVE</a>
     <h1><%= ntnames.name %></h1>
-      <button onclick="document.location='https://www.google.com/'" class="btn search btn-outline-success" type="submit">Return</button>
+    <a class="btn search btn-outline-success" href="/nonteaching/<%= ntnames._id %>/edit">Edit</a>
+    <form action="/nonteaching/<%= ntnames._id%>?_method=DELETE" method="POST">
+      <button class="btn search btn-outline-success">DELETE</button>
+    </form>
+    <a class="btn search btn-outline-success" href="/nonteaching">Return</a>
   </div>
 </nav>
 <div id="container" class="ctnr">
-    <button onclick="document.location='https://www.facebook.com/'" class="button">
+    <button class="button">
         <span class="button_lg">
             <span class="button_sl"></span>
             <span class="button_text">Add Leave</span>

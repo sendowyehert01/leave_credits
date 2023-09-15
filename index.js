@@ -3,8 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
 const NonTeaching = require('./models/nonteaching');
+const methodOverride = require('method-override');
 
-mongoose.connect('mongodb://127.0.0.1:27017/NonTeachingDB', {
+mongoose.connect('mongodb://127.0.0.1:27017/NonTeachingDBTest', {
     useNewUrlParser: true,
     // useCreateIndex: true,
     useUnifiedTopology: true
@@ -20,6 +21,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
     res.send('Leave Credits');
@@ -35,12 +37,31 @@ app.get('/addnonteaching', (req, res) => {
 })
 
 app.post('/nonteaching', async (req, res) => {
-    res.send(req.body);
+    const ntnames = new NonTeaching(req.body);
+    await ntnames.save();
+    res.redirect('/nonteaching');
 })
 
 app.get('/nonteaching/:id', async (req, res) => {
     const ntnames = await NonTeaching.findById(req.params.id);
     res.render('vl_data', { ntnames });
+})
+
+app.get('/nonteaching/:id/edit', async (req, res) => {
+    const ntnames = await NonTeaching.findById(req.params.id);
+    res.render('Edit Name', { ntnames });
+})
+
+app.put('/nonteaching/:id', async (req, res) => {
+    const { id } = req.params;
+    const ntnames = await NonTeaching.findByIdAndUpdate(id , { ...req.body });
+    res.redirect(`/nonteaching/${ntnames._id}`);
+})
+
+app.delete('/nonteaching/:id', async (req, res) => {
+    const { id } = req.params;
+    await NonTeaching.findByIdAndDelete(id);
+    res.redirect('/nonteaching');
 })
 
 app.listen(3000, () => {

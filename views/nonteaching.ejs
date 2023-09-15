@@ -24,7 +24,7 @@
     <button class="button">
         <span class="button_lg">
             <span class="button_sl"></span>
-            <span class="button_text">Add name</span>
+            <span class="button_text"><a href="/addnonteaching">Add name</a></span>
         </span>
     </button>
 
@@ -41,8 +41,10 @@
     <tbody>
       <% ntnames.map((names) => { %>
         <tr>
-          <td class="name"><a href="/nonteaching/<%= names._id %>"><%= names.name %></a></td>
-          <td class="vl"><button >View</button></td>
+          <td class="name">
+            <!-- <%= names.lastname +", "+ names.firstname +" "+ names.middlename +" "+ names.suffix %> -->
+            <%= names.name %></td>
+          <td class="vl"><button><a href="/nonteaching/<%= names._id %>">View</a></button></td>
           <td class="sl"><button>View</button></td>
         </tr>
       <% }) %>

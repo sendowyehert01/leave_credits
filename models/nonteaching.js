@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const NonTeachingSchema = new Schema({
+    // lastname: String,
+    // firstname: String,
+    // middlename: String,
+    // suffix: String
     name: {
         type: String
     }
